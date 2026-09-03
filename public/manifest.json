@@ -1,0 +1,11 @@
+{
+  "name": "Kumbuka",
+  "short_name": "Kumbuka",
+  "description": "Say what happened, in any language.",
+  "start_url": "/app",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
+  "orientation": "portrait",
+  "icons": []
+}

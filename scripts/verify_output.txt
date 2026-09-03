@@ -1,0 +1,18 @@
+Checked 110 files under /home/claude/kumbuka-2026
+
+All static, offline checks passed:
+  - every required file present and non-empty
+  - every @/ and relative import resolves to a real file
+  - every fetch('/api/...') call has a matching route.ts
+  - every source file has balanced braces/parens/brackets
+  - no garbled transcript artifacts or merge markers
+  - package.json, tsconfig.json, manifest.json are valid JSON
+  - package.json declares every dependency the code imports
+  - evals/cases.ts has exactly 30 uniquely-numbered cases
+  - the confirm-token write gate is wired end to end
+
+VERIFY: PASSED
+
+Reminder: this is a static/offline check only. It does not run
+`npm install`, `next build`, or call a live model — this sandbox has
+no network access. Run those yourself; see README.md > Verification.

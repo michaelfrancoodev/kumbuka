@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: #FFFFFF;
+  color: #0D0D0D;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+h1 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Tabular figures for money and dates so columns of numbers line up. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}

@@ -1,0 +1,35 @@
+{
+  "name": "kumbuka-2026",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Say what happened, in any language. Kumbuka asks about anything it could not determine, waits for you to confirm it, and stores it as a structured record.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "eval": "tsx evals/run.ts",
+    "verify": "python3 scripts/verify.py"
+  },
+  "dependencies": {
+    "next": "14.2.15",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "dexie": "4.0.8",
+    "dexie-react-hooks": "1.1.7",
+    "lucide-react": "0.383.0"
+  },
+  "devDependencies": {
+    "typescript": "5.5.4",
+    "@types/node": "20.14.10",
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0",
+    "tailwindcss": "3.4.10",
+    "postcss": "8.4.41",
+    "autoprefixer": "10.4.20",
+    "tsx": "4.16.2"
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  }
+}
