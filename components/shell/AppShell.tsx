@@ -10,6 +10,7 @@ import type { ReactNode } from "react";
 const desktopLinks = [
   { href: "/app", key: "nav.today", exact: true },
   { href: "/app/records", key: "nav.records", exact: false },
+  { href: "/app/reports", key: "nav.reports", exact: false },
   { href: "/app/people", key: "nav.people", exact: false },
   { href: "/app/ask", key: "nav.ask", exact: false },
 ] as const;

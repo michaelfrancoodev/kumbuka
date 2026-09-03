@@ -32,6 +32,7 @@ const en: Dict = {
   "capture.listening": "Listening",
   "capture.stillListening": "Still listening...",
   "capture.stop": "Stop",
+  "capture.cancel": "Cancel recording",
   "capture.tryOne": "Try one of these",
 
   "records.title": "Records",
@@ -106,6 +107,30 @@ const en: Dict = {
   "state.parseFailed": "Could not read that. Check your connection and try again.",
   "state.retry": "Could not save. Try again.",
   "state.micDenied": "Microphone access was denied. You can still type.",
+
+  "nav.reports": "Reports",
+  "reports.title": "Reports",
+  "reports.unit.day": "Day",
+  "reports.unit.week": "Week",
+  "reports.unit.month": "Month",
+  "reports.unit.all": "All",
+  "reports.periodToday": "Today",
+  "reports.periodThisWeek": "This week",
+  "reports.periodThisMonth": "This month",
+  "reports.periodLastDays": "Last {n} days",
+  "reports.periodLastWeeks": "Last {n} weeks",
+  "reports.periodLastMonths": "Last {n} months",
+  "reports.periodAll": "All time",
+  "reports.net": "Net",
+  "reports.overviewTitle": "Overview",
+  "reports.overviewLoading": "Putting the overview together...",
+  "reports.overviewFailed": "Could not write the overview. The numbers below are still exact.",
+  "reports.basedOn": "Based on {n} record(s) recorded by you",
+  "reports.byKind": "By type",
+  "reports.topPeople": "Top people",
+  "reports.noRecords": "No records in this period",
+  "reports.noRecordsHint": "Nothing was recorded in this range yet.",
+  "reports.incompleteNote": "{n} record(s) from this period still need a detail",
 };
 
 const sw: Dict = {
@@ -127,6 +152,7 @@ const sw: Dict = {
   "capture.listening": "Ninasikiliza",
   "capture.stillListening": "Bado ninasikiliza...",
   "capture.stop": "Simamisha",
+  "capture.cancel": "Ghairi urekodishaji",
   "capture.tryOne": "Jaribu moja ya haya",
 
   "records.title": "Kumbukumbu",
@@ -201,6 +227,30 @@ const sw: Dict = {
   "state.parseFailed": "Imeshindwa kusoma hilo. Angalia mtandao wako na ujaribu tena.",
   "state.retry": "Imeshindwa kuhifadhi. Jaribu tena.",
   "state.micDenied": "Ruhusa ya kipaza sauti imekataliwa. Bado unaweza kuandika.",
+
+  "nav.reports": "Ripoti",
+  "reports.title": "Ripoti",
+  "reports.unit.day": "Siku",
+  "reports.unit.week": "Wiki",
+  "reports.unit.month": "Mwezi",
+  "reports.unit.all": "Zote",
+  "reports.periodToday": "Leo",
+  "reports.periodThisWeek": "Wiki hii",
+  "reports.periodThisMonth": "Mwezi huu",
+  "reports.periodLastDays": "Siku {n} zilizopita",
+  "reports.periodLastWeeks": "Wiki {n} zilizopita",
+  "reports.periodLastMonths": "Miezi {n} iliyopita",
+  "reports.periodAll": "Muda wote",
+  "reports.net": "Salio",
+  "reports.overviewTitle": "Muhtasari",
+  "reports.overviewLoading": "Ninaandaa muhtasari...",
+  "reports.overviewFailed": "Imeshindwa kuandika muhtasari. Namba zilizo chini bado ni sahihi.",
+  "reports.basedOn": "Kutokana na kumbukumbu {n} ulizoingiza",
+  "reports.byKind": "Kwa aina",
+  "reports.topPeople": "Watu wakuu",
+  "reports.noRecords": "Hakuna kumbukumbu kwa muda huu",
+  "reports.noRecordsHint": "Hakuna kilichorekodiwa kwa muda huu bado.",
+  "reports.incompleteNote": "Kumbukumbu {n} za muda huu bado zinahitaji taarifa",
 };
 
 const dictionaries: Record<Language, Dict> = { en, sw };
@@ -208,7 +258,7 @@ const dictionaries: Record<Language, Dict> = { en, sw };
 const STORAGE_KEY = "kumbuka.language";
 
 export function useLanguage() {
-  const [language, setLanguageState] = useState<Language>("sw");
+  const [language, setLanguageState] = useState<Language>("en");
   const [ready, setReady] = useState(false);
 
   useEffect(() => {

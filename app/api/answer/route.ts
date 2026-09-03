@@ -68,6 +68,45 @@ name.`,
       return NextResponse.json({ ok: true, plan });
     }
 
+    if (body.mode === "report") {
+      const answer = await generateText({
+        apiKey,
+        model: process.env.GEMINI_MODEL,
+        temperature: 0.2,
+        systemInstruction: `You write a short overview of a period's activity for a small business or mining
+operation owner in Tanzania, using only the numbers given below.
+
+THE ONE RULE
+Every figure in your answer must come from STATS below, exactly. Never
+estimate, round differently than given, average, project forward, or
+mention any person, amount, date or count that is not present in STATS.
+If STATS shows zero records, say plainly that nothing was recorded for this
+period, and stop there.
+
+WHAT TO WRITE
+3-5 short sentences, plain language, no headings, no bullet points:
+  1. The period covered and the total money out and money in (net position).
+  2. What most of the activity was (the largest kind or the busiest person,
+     from byKind/topPeople — only if that list is non-empty).
+  3. If incompleteCount is greater than 0, mention that many records are
+     still missing a detail and are waiting on the person, by name (Records
+     page) — do not guess which detail.
+  4. Keep the tone matter-of-fact and useful, like a brief handed to someone
+     who is busy. Do not add advice, opinions, or predictions.
+
+State money as "TSh 45,000" style using the numbers given. State how many
+records the overview rests on.
+
+Reply in ${body.language === "sw" ? "Swahili" : "English"}.
+
+STATS
+${JSON.stringify(body.stats).slice(0, 4000)}`,
+        userText: `Period: ${body.periodLabel}`,
+      });
+
+      return NextResponse.json({ ok: true, answer });
+    }
+
     if (body.mode === "answer") {
       const answer = await generateText({
         apiKey,

@@ -2,15 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, List, Users, MessageCircle } from "lucide-react";
+import { Home, List, Users, MessageCircle, BarChart3 } from "lucide-react";
 
 /**
- * Primary navigation. Four destinations, fixed to the bottom edge where a
+ * Primary navigation. Five destinations, fixed to the bottom edge where a
  * thumb reaches on a phone.
  */
 const items = [
   { href: "/app", key: "nav.today", Icon: Home, exact: true },
   { href: "/app/records", key: "nav.records", Icon: List, exact: false },
+  { href: "/app/reports", key: "nav.reports", Icon: BarChart3, exact: false },
   { href: "/app/people", key: "nav.people", Icon: Users, exact: false },
   { href: "/app/ask", key: "nav.ask", Icon: MessageCircle, exact: false },
 ] as const;

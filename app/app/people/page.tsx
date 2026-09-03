@@ -7,8 +7,8 @@ import { useLanguage } from "@/lib/i18n";
 import { useConfirmedRecords } from "@/hooks/useRecords";
 import { formatMoney } from "@/lib/money";
 import { formatDate } from "@/lib/dates";
+import { summariseByPerson } from "@/lib/people";
 import Skeleton from "@/components/ui/Skeleton";
-import type { KumbukaRecord, PersonSummary } from "@/lib/types";
 
 /**
  * People. Derived from the records rather than maintained separately, so
@@ -75,37 +75,4 @@ export default function PeoplePage() {
       )}
     </div>
   );
-}
-
-export function summariseByPerson(records: KumbukaRecord[] | undefined): PersonSummary[] | undefined {
-  if (records === undefined) return undefined;
-
-  const byName = new Map<string, PersonSummary>();
-
-  for (const record of records) {
-    if (!record.personName) continue;
-
-    const existing = byName.get(record.personName) ?? {
-      name: record.personName,
-      totalOut: 0,
-      totalIn: 0,
-      recordCount: 0,
-      lastActivity: null as string | null,
-      recordIds: [] as string[],
-    };
-
-    if (record.direction === "out") existing.totalOut += record.amount ?? 0;
-    if (record.direction === "in") existing.totalIn += record.amount ?? 0;
-
-    existing.recordCount += 1;
-    existing.recordIds.push(record.id);
-
-    if (!existing.lastActivity || (record.occurredOn ?? "") > existing.lastActivity) {
-      existing.lastActivity = record.occurredOn;
-    }
-
-    byName.set(record.personName, existing);
-  }
-
-  return [...byName.values()].sort((a, b) => (b.lastActivity ?? "").localeCompare(a.lastActivity ?? ""));
 }

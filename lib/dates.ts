@@ -49,6 +49,36 @@ export function formatDateLong(iso: string, locale: string = "en-GB"): string {
   }).format(date);
 }
 
+export type ReportUnit = "day" | "week" | "month" | "all";
+
+/**
+ * Turn a report filter (unit + count, e.g. "3 weeks") into a concrete,
+ * deterministic ISO date range ending today. This is plain arithmetic, not
+ * something a model infers — a report's range must be exactly what the
+ * person picked, every time.
+ *
+ * "all" returns nulls, meaning no filter: the full history.
+ */
+export function reportRange(unit: ReportUnit, count: number): { from: string | null; to: string | null } {
+  const to = todayIso();
+  if (unit === "all") return { from: null, to: null };
+
+  const end = new Date(`${to}T00:00:00Z`);
+  const start = new Date(end);
+
+  if (unit === "day") {
+    start.setUTCDate(start.getUTCDate() - (count - 1));
+  } else if (unit === "week") {
+    start.setUTCDate(start.getUTCDate() - (count * 7 - 1));
+  } else {
+    start.setUTCMonth(start.getUTCMonth() - count);
+    start.setUTCDate(start.getUTCDate() + 1);
+  }
+
+  const from = new Intl.DateTimeFormat("en-CA", { timeZone: "UTC" }).format(start);
+  return { from, to };
+}
+
 export function formatTime(epochMs: number): string {
   return new Intl.DateTimeFormat("en-GB", {
     hour: "2-digit",

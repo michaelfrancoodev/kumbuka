@@ -59,7 +59,14 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ ok: true, draft: sanitise(parsed) });
   } catch (error) {
-    console.error("parse failed", error);
+    // Logged in full so a 100%-failure run (every case reporting the same
+    // "parse_failed") can be told apart from a real parsing/prompt problem.
+    // A blanket failure like that almost always means the request to Gemini
+    // itself never succeeded — an invalid or unauthorised GEMINI_API_KEY, a
+    // model name the key cannot access, a quota/billing block, or the dev
+    // machine's network refusing generativelanguage.googleapis.com — rather
+    // than anything about the sentence that was sent.
+    console.error("[/api/parse] Gemini request failed:", error instanceof Error ? error.message : error);
     return NextResponse.json({ ok: false, error: "parse_failed" }, { status: 502 });
   }
 }

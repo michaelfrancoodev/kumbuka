@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/lib/i18n";
 import { useSpeech } from "@/hooks/useSpeech";
 import { useIncompleteRecords, useTodayRecords, useTodaySummary } from "@/hooks/useRecords";
@@ -40,6 +40,10 @@ export default function TodayPage() {
   const { t, language, ready } = useLanguage();
   const [text, setText] = useState("");
   const [phase, setPhase] = useState<Phase>({ step: "idle" });
+  // Tracks whether the text currently in the capture box came from dictation,
+  // so the record's provenance ("recorded by voice" vs "by typing") is right
+  // even though voice no longer submits itself — the user's own Send tap does.
+  const lastSourceRef = useRef<"voice" | "text">("text");
 
   const records = useTodayRecords();
   const summary = useTodaySummary();
@@ -101,7 +105,16 @@ export default function TodayPage() {
     [advance]
   );
 
-  const speech = useSpeech({ language, onComplete: (transcript) => parse(transcript, "voice") });
+  // Stopping a recording never submits it straight away. It hands the
+  // transcript back to the capture box so the person can read it, fix a
+  // misheard word, or record again before anything is sent for parsing.
+  const speech = useSpeech({
+    language,
+    onComplete: (transcript) => {
+      lastSourceRef.current = "voice";
+      setText(transcript);
+    },
+  });
 
   const resolveTerm = async (draft: Draft, index: number, kind: TermKind) => {
     await learnTerm(draft.unclearSpans[index].span, kind, draft.id);
@@ -156,7 +169,13 @@ export default function TodayPage() {
       </header>
 
       {speech.listening ? (
-        <LiveTranscript transcript={speech.transcript} state={speech.state} onStop={speech.stop} t={t} />
+        <LiveTranscript
+          transcript={speech.transcript}
+          state={speech.state}
+          onStop={speech.stop}
+          onCancel={speech.cancel}
+          t={t}
+        />
       ) : phase.step === "term" ? (
         <UnknownTermPrompt
           span={phase.draft.unclearSpans[phase.index]}
@@ -182,8 +201,11 @@ export default function TodayPage() {
         <>
           <CaptureBox
             value={text}
-            onChange={setText}
-            onSubmit={parse}
+            onChange={(next) => {
+              lastSourceRef.current = "text";
+              setText(next);
+            }}
+            onSubmit={(sentence) => parse(sentence, lastSourceRef.current)}
             onStartVoice={speech.start}
             voiceAvailable={speech.available}
             busy={phase.step === "parsing"}
@@ -207,7 +229,17 @@ export default function TodayPage() {
       )}
 
       <Card label={t("records.title")} flush={!hasNothing}>
-        {hasNothing ? <EmptyState t={t} onPick={setText} /> : <RecordList records={records} t={t} />}
+        {hasNothing ? (
+          <EmptyState
+            t={t}
+            onPick={(sentence) => {
+              lastSourceRef.current = "text";
+              setText(sentence);
+            }}
+          />
+        ) : (
+          <RecordList records={records} t={t} />
+        )}
       </Card>
     </div>
   );

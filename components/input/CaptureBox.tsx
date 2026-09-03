@@ -20,7 +20,7 @@ export default function CaptureBox({
 }: {
   value: string;
   onChange: (next: string) => void;
-  onSubmit: (text: string, source: "voice" | "text") => void;
+  onSubmit: (text: string) => void;
   onStartVoice?: () => void;
   voiceAvailable?: boolean;
   busy?: boolean;
@@ -33,7 +33,7 @@ export default function CaptureBox({
 
   const submit = () => {
     if (!canSubmit) return;
-    onSubmit(value.trim(), "text");
+    onSubmit(value.trim());
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
